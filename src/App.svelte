@@ -17,17 +17,19 @@
 
 	function saveImage() {
 		const scale = 2;
+		const style = {
+			transform: `scale(${scale})`,
+			transformOrigin: 'top left',
+			width: categoryForm.clientWidth + 'px', // use original width of DOM element to avoid part of the image being cropped out
+			height: categoryForm.clientHeight + 'px', // use original height of DOM element
+		};
 
 		domtoimage
 			.toBlob(categoryForm, {
 				// These options scale the image to avoid blurry output.
-				height: categoryForm.offsetHeight * scale,
-				style: {
-					transform: `scale(${scale}) translate(${
-						categoryForm.offsetWidth / 2 / scale
-					}px, ${categoryForm.offsetHeight / 2 / scale}px)`,
-				},
-				width: categoryForm.offsetWidth * scale,
+				width: categoryForm.clientWidth * scale,
+				height: categoryForm.clientHeight * scale,
+				style: style,
 			})
 			.then(function (blob) {
 				window.saveAs(blob, 'howsu.png');
